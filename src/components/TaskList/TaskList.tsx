@@ -1,46 +1,47 @@
 import React from 'react';
-import Task, { task } from '../Task';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-export interface props {
-  loading?: boolean;
-  tasks?: task[];
-  onPinTask?: (id: task["id"]) => void;
-  onArchiveTask?: (id: task["id"]) => void;
-  onUnpinTask?: (id: task["id"]) => void;
-}
-export default function TaskList({ loading, tasks, onPinTask, onArchiveTask, onUnpinTask }: props) {
+import Task from '../Task/Task';
+import { connect } from 'react-redux';
+import { archiveTask, pinTask } from '../../lib/redux';
+
+
+export function PureTaskList({ loading, tasks, onPinTask, onArchiveTask }:any) {
   const events = {
     onPinTask,
     onArchiveTask,
-    onUnpinTask
   };
+
+
 
   if (loading) {
     return (
-      <div className="loader">
-        <CircularProgress />
+      <div className="list-items">
+        <CircularProgress/>
+        <h2>Loading...</h2>
       </div>
     );
   }
-  if (tasks!.length === 0) {
+
+  if (tasks.length === 0) {
     return (
-      <div className="emptyListWrapper">
-        <span />
-        <  CheckCircleIcon className="tickIcon" />
-        <div className="emptyListText">You have no tasks</div>
-        <div className="emptyListText">Sit back and relax</div>
+      <div className="list-items">
+        <div className="wrapper-message">
+          <span className="icon-check" />
+          <div className="title-message">You have no tasks</div>
+          <div className="subtitle-message">Sit back and relax</div>
+        </div>
       </div>
     );
   }
+
   const tasksInOrder = [
-    ...tasks!.filter(t => t.state === 'TASK_PINNED'),
-    ...tasks!.filter(t => t.state === 'TASK_INBOX'),
-    ...tasks!.filter(t => t.state === 'TASK_ARCHIVED'),
+    ...tasks.filter((t:any) => t.state === 'TASK_PINNED'),
+    ...tasks.filter((t:any) => t.state !== 'TASK_PINNED'),
   ];
+
   return (
-    <div >
-      {tasksInOrder.map(task => (
+    <div className="list-items">
+      {tasksInOrder.map((task) => (
         <Task key={task.id} task={task} {...events} />
       ))}
     </div>
@@ -49,12 +50,16 @@ export default function TaskList({ loading, tasks, onPinTask, onArchiveTask, onU
 
 
 
-TaskList.defaultProps = {
-
-  tasks: [{ id: '1', title: 'Task 1', state: 'TASK_INBOX' }, { id: '2', title: 'Task 2', state: 'TASK_INBOX' }, { id: '3', title: 'Task 3', state: 'TASK_INBOX' }, { id: '4', title: 'Task 4', state: 'TASK_INBOX' }, { id: '5', title: 'Task 5', state: 'TASK_INBOX' }, { id: '6', title: 'Task 6', state: "TASK_INBOX" }],
+PureTaskList.defaultProps = {
   loading: false,
-  onArchiveTask: () => { console.log("task archived") },
-  onPinTask: () => { console.log("task pinned") },
-  onUnpinTask: () => { console.log("task unpinned") }
+};
 
-}
+export default connect(
+  ({ tasks }:any) => ({
+    tasks: tasks.filter((t:any) => t.state === 'TASK_INBOX' || t.state === 'TASK_PINNED'),
+  }),
+  dispatch => ({
+    onArchiveTask: (id: any) => dispatch(archiveTask(id)),
+    onPinTask: (id: any) => dispatch(pinTask(id)),
+  })
+)(PureTaskList);
