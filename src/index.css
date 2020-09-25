@@ -796,7 +796,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #239da8;
+  color: #238da8;
 }
 a:active {
   color: #555;
@@ -856,7 +856,7 @@ a:focus {
   color: #eee;
 }
 .list-item .actions a:hover {
-  color: #2cc5d2;
+  color: #d22c87;
 }
 .list-item .actions a:active {
   color: #555;
@@ -878,6 +878,7 @@ a:focus {
 }
 .list-item:hover .checkbox {
   cursor: pointer;
+  color: #2cc5d2;
 }
 .list-item + .list-item {
   border-top: 1px solid #f0f9fb;

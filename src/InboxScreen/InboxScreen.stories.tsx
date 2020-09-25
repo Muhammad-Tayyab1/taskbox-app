@@ -12,8 +12,6 @@ export default {
   parameters: { assets: ['designs/app.png'] },
   decorators: [(story:any) => <Provider store={store}>{story()}</Provider>],
 };
-
-// A super-simple mock of a redux store
 const store:any = {
   getState: () => {
     return {
