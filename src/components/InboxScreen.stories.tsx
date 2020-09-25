@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { Provider } from 'react-redux';
 
 import { PureInboxScreen } from './InboxScreen';
-import * as TaskListStories from '../components/TaskList/TaskList.stories';
+import * as TaskListStories from './TaskList.stories';
 
 
 export default {

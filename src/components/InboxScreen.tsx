@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import TaskList from '../components/TaskList/TaskList';
+import TaskList from './TaskList';
 
 export function PureInboxScreen({ error }:any) {
   if (error) {
